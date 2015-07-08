@@ -72,7 +72,7 @@ unexport GOBIN
 SUFFIX   ?= $(GOOS)-$(GOARCH)
 BINARY   ?= $(TARGET)
 ARCHIVE  ?= $(TARGET)-$(VERSION).$(SUFFIX).tar.gz
-ROOTPKG  ?= github.com/digitalocean/$(TARGET)
+ROOTPKG  ?= github.com/prometheus/$(TARGET)
 SELFLINK ?= $(GOPATH)/src/$(ROOTPKG)
 
 default: $(BINARY)
