@@ -84,4 +84,9 @@ func TestPointStore(t *testing.T) {
 	if want, got := int64(15), got.Value; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
+
+	_, err = ps.get("no point")
+	if err != ErrPointNotFound {
+		t.Error("getting non existent point should raise error")
+	}
 }

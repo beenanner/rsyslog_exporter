@@ -3,7 +3,7 @@ package main
 import "testing"
 
 var (
-	inputLog = `{"name":"test_input", "origin":"imuxsock", "submitted":1000}`
+	inputLog = []byte(`{"name":"test_input", "origin":"imuxsock", "submitted":1000}`)
 )
 
 func TestgetInput(t *testing.T) {

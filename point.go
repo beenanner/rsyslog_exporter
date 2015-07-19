@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -13,6 +13,11 @@ const (
 	gauge
 )
 
+var (
+	ErrIncompatiblePointType = errors.New("incompatible point type")
+	ErrUnknownPointType      = errors.New("unknown point type")
+)
+
 type point struct {
 	Name        string
 	Description string
@@ -20,18 +25,20 @@ type point struct {
 	Value       int64
 }
 
-func (s *point) add(newPoint *point) error {
-	switch s.Type {
+func (p *point) add(newPoint *point) error {
+	switch newPoint.Type {
 	case gauge:
-		if newPoint.Type != gauge {
-			return fmt.Errorf("incompatible point type")
+		if p.Type != gauge {
+			return ErrIncompatiblePointType
 		}
-		s.Value = newPoint.Value
+		p.Value = newPoint.Value
 	case counter:
-		if newPoint.Type != counter {
-			return fmt.Errorf("incompatible point type")
+		if p.Type != counter {
+			return ErrIncompatiblePointType
 		}
-		s.Value = s.Value + newPoint.Value
+		p.Value = p.Value + newPoint.Value
+	default:
+		return ErrUnknownPointType
 	}
 	return nil
 }

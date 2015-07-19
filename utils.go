@@ -2,7 +2,8 @@ package main
 
 import "strings"
 
-func getStatType(line string) rsyslogType {
+func getStatType(buf []byte) rsyslogType {
+	line := string(buf)
 	if strings.Contains(line, "processed") {
 		return rsyslogAction
 	} else if strings.Contains(line, "submitted") {

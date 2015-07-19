@@ -3,7 +3,7 @@ package main
 import "testing"
 
 var (
-	resourceLog = `{"name":"resource-usage","utime":10,"stime":20,"maxrss":30,"minflt":40,"majflt":50,"inblock":60,"oublock":70,"nvcsw":80,"nivcsw":90}`
+	resourceLog = []byte(`{"name":"resource-usage","utime":10,"stime":20,"maxrss":30,"minflt":40,"majflt":50,"inblock":60,"oublock":70,"nvcsw":80,"nivcsw":90}`)
 )
 
 func TestNewResourceFromJSON(t *testing.T) {

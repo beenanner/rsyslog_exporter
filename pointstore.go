@@ -1,9 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"sort"
 	"sync"
+)
+
+var (
+	ErrPointNotFound = errors.New("point does not exist")
 )
 
 type pointStore struct {
@@ -47,5 +51,6 @@ func (ps *pointStore) get(name string) (*point, error) {
 		ps.lock.Unlock()
 		return p, nil
 	}
-	return &point{}, fmt.Errorf("point does not exist")
+	ps.lock.Unlock()
+	return &point{}, ErrPointNotFound
 }
