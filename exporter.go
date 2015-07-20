@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"log"
 	"os"
 	"strings"
 	"sync"
@@ -22,65 +20,47 @@ const (
 )
 
 type rsyslogExporter struct {
-	debug   bool
 	started bool
 	logfile *os.File
 	scanner *bufio.Scanner
 	pointStore
 }
 
-func newRsyslogExporter(logPath string) (*rsyslogExporter, error) {
-	debug := false
-	if len(logPath) > 0 {
-		debug = true
-	}
-
+func newRsyslogExporter() *rsyslogExporter {
 	e := &rsyslogExporter{
-		debug:   debug,
 		scanner: bufio.NewScanner(os.Stdin),
 		pointStore: pointStore{
 			pointMap: make(map[string]*point),
 			lock:     &sync.RWMutex{},
 		},
 	}
-
-	if e.debug {
-		var err error
-		e.logfile, err = os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			return e, fmt.Errorf("could not open log file")
-		}
-		log.SetOutput(e.logfile)
-		log.Println("starting")
-	}
-
-	return e, nil
+	return e
 }
 
-func (re *rsyslogExporter) handleStatLine(line string) {
-	pstatType := getStatType(re.scanner.Text())
+func (re *rsyslogExporter) handleStatLine(buf []byte) {
+	pstatType := getStatType(buf)
 
 	switch pstatType {
 	case rsyslogAction:
-		a := newActionFromJSON(re.scanner.Bytes())
+		a := newActionFromJSON(buf)
 		for _, p := range a.toPoints() {
 			re.add(p)
 		}
 
 	case rsyslogInput:
-		i := newInputFromJSON(re.scanner.Bytes())
+		i := newInputFromJSON(buf)
 		for _, p := range i.toPoints() {
 			re.add(p)
 		}
 
 	case rsyslogQueue:
-		q := newQueueFromJSON(re.scanner.Bytes())
+		q := newQueueFromJSON(buf)
 		for _, p := range q.toPoints() {
 			re.add(p)
 		}
 
 	case rsyslogResource:
-		r := newResourceFromJSON(re.scanner.Bytes())
+		r := newResourceFromJSON(buf)
 		for _, p := range r.toPoints() {
 			re.add(p)
 		}
@@ -115,10 +95,6 @@ func (re *rsyslogExporter) Describe(ch chan<- *prometheus.Desc) {
 
 // Collect is called by Prometheus when collecting metrics.
 func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
-	if re.debug {
-		log.Print("Collect waiting for lock")
-	}
-
 	keys := re.keys()
 
 	for _, k := range keys {
@@ -142,6 +118,6 @@ func (re *rsyslogExporter) run() {
 		if strings.Contains(re.scanner.Text(), "EOF") {
 			os.Exit(0)
 		}
-		re.handleStatLine(re.scanner.Text())
+		re.handleStatLine(re.scanner.Bytes())
 	}
 }

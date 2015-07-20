@@ -3,7 +3,7 @@ package main
 import "testing"
 
 var (
-	queueLog = `{"name":"main Q","size":10,"enqueued":20,"full":30,"discarded.full":40,"discarded.nf":50,"maxqsize":60}`
+	queueLog = []byte(`{"name":"main Q","size":10,"enqueued":20,"full":30,"discarded.full":40,"discarded.nf":50,"maxqsize":60}`)
 )
 
 func TestNewQueueFromJSON(t *testing.T) {

@@ -3,7 +3,7 @@ package main
 import "testing"
 
 var (
-	actionLog = `{"name":"test_action","processed":100000,"failed":2,"suspended":1,"suspended.duration":1000,"resumed":1}`
+	actionLog = []byte(`{"name":"test_action","processed":100000,"failed":2,"suspended":1,"suspended.duration":1000,"resumed":1}`)
 )
 
 func TestNewActionFromJSON(t *testing.T) {

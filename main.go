@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,17 +10,13 @@ import (
 )
 
 var (
-	logPath       = flag.String("logpath", "", "Log file to write to for debugging purposes")
 	listenAddress = flag.String("web.listen-address", ":9104", "Address to listen on for web interface and telemetry.")
 	metricPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 )
 
 func main() {
 	flag.Parse()
-	exporter, err := newRsyslogExporter(*logPath)
-	if err != nil {
-		log.Fatal(err)
-	}
+	exporter := newRsyslogExporter()
 
 	go func() {
 		c := make(chan os.Signal, 1)
@@ -47,7 +42,7 @@ func main() {
 `))
 	})
 
-	err = http.ListenAndServe(*listenAddress, nil)
+	err := http.ListenAndServe(*listenAddress, nil)
 	if err != nil {
 		panic(err)
 	}
