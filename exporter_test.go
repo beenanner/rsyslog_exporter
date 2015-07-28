@@ -17,7 +17,7 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 		}
 
 		if want, got := item.Val, p.promValue(); want != got {
-			t.Errorf("%s: want '%d', got '%d'", item.Name, want, got)
+			t.Errorf("%s: want '%f', got '%f'", item.Name, want, got)
 		}
 	}
 
@@ -41,7 +41,7 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 		}
 
 		if want, got := wanted, p.promValue(); want != got {
-			t.Errorf("%s: want '%d', got '%d'", item.Name, want, got)
+			t.Errorf("%s: want '%f', got '%f'", item.Name, want, got)
 		}
 	}
 }
