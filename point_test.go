@@ -41,7 +41,7 @@ func TestAddCounter(t *testing.T) {
 	}
 
 	if want, got := float64(15), p1.promValue(); want != got {
-		t.Errorf("want '%d', got '%d'", want, got)
+		t.Errorf("want '%f', got '%f'", want, got)
 	}
 
 	if want, got := prometheus.ValueType(1), p1.promType(); want != got {
@@ -50,7 +50,7 @@ func TestAddCounter(t *testing.T) {
 
 	wanted := `Desc{fqName: "rsyslog_my counter", help: "", constLabels: {}, variableLabels: []}`
 	if want, got := wanted, p1.promDescription().String(); want != got {
-		t.Errorf("want '%d', got '%d'", want, got)
+		t.Errorf("want '%s', got '%s'", want, got)
 	}
 }
 
@@ -88,7 +88,7 @@ func TestAddGauge(t *testing.T) {
 	}
 
 	if want, got := float64(5), p1.promValue(); want != got {
-		t.Errorf("want '%d', got '%d'", want, got)
+		t.Errorf("want '%f', got '%f'", want, got)
 	}
 
 	if want, got := prometheus.ValueType(2), p1.promType(); want != got {
@@ -97,7 +97,7 @@ func TestAddGauge(t *testing.T) {
 
 	wanted := `Desc{fqName: "rsyslog_my gauge", help: "", constLabels: {}, variableLabels: []}`
 	if want, got := wanted, p1.promDescription().String(); want != got {
-		t.Errorf("want '%d', got '%d'", want, got)
+		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
 }
