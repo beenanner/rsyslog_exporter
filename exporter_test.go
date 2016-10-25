@@ -163,32 +163,32 @@ func TestHandleLineWithQueue(t *testing.T) {
 		&testUnit{
 			Name: "queue_size",
 			Val:  10,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 		&testUnit{
 			Name: "queue_enqueued",
 			Val:  20,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 		&testUnit{
 			Name: "queue_full",
 			Val:  30,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 		&testUnit{
 			Name: "queue_discarded_full",
 			Val:  40,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 		&testUnit{
 			Name: "queue_discarded_not_full",
 			Val:  50,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 		&testUnit{
 			Name: "queue_max_size",
 			Val:  60,
-			LabelValue: "main_q",
+			LabelValue: "main Q",
 		},
 	}
 

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"strings"
 )
 
 type queue struct {
@@ -20,8 +19,6 @@ func newQueueFromJSON(b []byte) *queue {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat queue
 	dec.Decode(&pstat)
-	pstat.Name = strings.ToLower(pstat.Name)
-	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
 	return &pstat
 }
 

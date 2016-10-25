@@ -14,7 +14,7 @@ func TestNewQueueFromJSON(t *testing.T) {
 
 	pstat := newQueueFromJSON([]byte(queueLog))
 
-	if want, got := "main_q", pstat.Name; want != got {
+	if want, got := "main Q", pstat.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -58,7 +58,7 @@ func TestQueueToPoints(t *testing.T) {
 	if want, got := gauge, point.Type; want != got {
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -75,7 +75,7 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -92,7 +92,7 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -109,7 +109,7 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -126,7 +126,7 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -143,7 +143,7 @@ func TestQueueToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := "main_q", point.LabelValue; want != got {
+	if want, got := "main Q", point.LabelValue; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 }

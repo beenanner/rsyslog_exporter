@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"strings"
 )
 
 type action struct {
@@ -19,8 +18,6 @@ func newActionFromJSON(b []byte) *action {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat action
 	dec.Decode(&pstat)
-	pstat.Name = strings.ToLower(pstat.Name)
-	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
 	return &pstat
 }
 
