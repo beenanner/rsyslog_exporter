@@ -29,7 +29,7 @@ func (q *queue) toPoints() []*point {
 	points := make([]*point, 6)
 
 	points[0] = &point{
-		Name:        "size",
+		Name:        "queue_size",
 		Type:        gauge,
 		Value:       q.Size,
 		Description: "messages currently in queue",
@@ -37,7 +37,7 @@ func (q *queue) toPoints() []*point {
 	}
 
 	points[1] = &point{
-		Name:        "enqueued",
+		Name:        "queue_enqueued",
 		Type:        counter,
 		Value:       q.Enqueued,
 		Description: "total messages enqueued",
@@ -45,7 +45,7 @@ func (q *queue) toPoints() []*point {
 	}
 
 	points[2] = &point{
-		Name:        "full",
+		Name:        "queue_full",
 		Type:        counter,
 		Value:       q.Full,
 		Description: "times queue was full",
@@ -53,7 +53,7 @@ func (q *queue) toPoints() []*point {
 	}
 
 	points[3] = &point{
-		Name:        "discarded_full",
+		Name:        "queue_discarded_full",
 		Type:        counter,
 		Value:       q.DiscardedFull,
 		Description: "messages discarded due to queue being full",
@@ -61,7 +61,7 @@ func (q *queue) toPoints() []*point {
 	}
 
 	points[4] = &point{
-		Name:        "discarded_not_full",
+		Name:        "queue_discarded_not_full",
 		Type:        counter,
 		Value:       q.DiscardedNf,
 		Description: "messages discarded when queue not full",
@@ -69,7 +69,7 @@ func (q *queue) toPoints() []*point {
 	}
 
 	points[5] = &point{
-		Name:        "max_queue_size",
+		Name:        "queue_max_size",
 		Type:        gauge,
 		Value:       q.MaxQsize,
 		Description: "maximum size queue has reached",

@@ -62,27 +62,27 @@ func (t *testUnit) key() string {
 func TestHandleLineWithAction(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "processed",
+			Name: "action_processed",
 			Val:  100000,
 			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "failed",
+			Name: "action_failed",
 			Val:  2,
 			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "suspended",
+			Name: "action_suspended",
 			Val:  1,
 			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "suspended_duration",
+			Name: "action_suspended_duration",
 			Val:  1000,
 			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "resumed",
+			Name: "action_resumed",
 			Val:  1,
 			LabelValue: "test_action",
 		},
@@ -95,47 +95,47 @@ func TestHandleLineWithAction(t *testing.T) {
 func TestHandleLineWithResource(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "utime",
+			Name: "resource_utime",
 			Val:  10,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "stime",
+			Name: "resource_stime",
 			Val:  20,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "maxrss",
+			Name: "resource_maxrss",
 			Val:  30,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "minflt",
+			Name: "resource_minflt",
 			Val:  40,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "majflt",
+			Name: "resource_majflt",
 			Val:  50,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "inblock",
+			Name: "resource_inblock",
 			Val:  60,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "oublock",
+			Name: "resource_oublock",
 			Val:  70,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "nvcsw",
+			Name: "resource_nvcsw",
 			Val:  80,
 			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "nivcsw",
+			Name: "resource_nivcsw",
 			Val:  90,
 			LabelValue: "resource-usage",
 		},
@@ -148,7 +148,7 @@ func TestHandleLineWithResource(t *testing.T) {
 func TestHandleLineWithInput(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "submitted",
+			Name: "input_submitted",
 			Val:  1000,
 			LabelValue: "test_input",
 		},
@@ -161,32 +161,32 @@ func TestHandleLineWithInput(t *testing.T) {
 func TestHandleLineWithQueue(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "size",
+			Name: "queue_size",
 			Val:  10,
 			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "enqueued",
+			Name: "queue_enqueued",
 			Val:  20,
 			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "full",
+			Name: "queue_full",
 			Val:  30,
 			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "discarded_full",
+			Name: "queue_discarded_full",
 			Val:  40,
 			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "discarded_not_full",
+			Name: "queue_discarded_not_full",
 			Val:  50,
 			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "max_queue_size",
+			Name: "queue_max_size",
 			Val:  60,
 			LabelValue: "main_q",
 		},

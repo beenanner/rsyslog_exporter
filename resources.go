@@ -29,7 +29,7 @@ func (r *resource) toPoints() []*point {
 	points := make([]*point, 9)
 
 	points[0] = &point{
-		Name:        "utime",
+		Name:        "resource_utime",
 		Type:        counter,
 		Value:       r.Utime,
 		Description: "user time used in microseconds",
@@ -37,7 +37,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[1] = &point{
-		Name:        "stime",
+		Name:        "resource_stime",
 		Type:        counter,
 		Value:       r.Stime,
 		Description: "system time used in microsends",
@@ -45,7 +45,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[2] = &point{
-		Name:        "maxrss",
+		Name:        "resource_maxrss",
 		Type:        gauge,
 		Value:       r.Maxrss,
 		Description: "maximum resident set size",
@@ -53,7 +53,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[3] = &point{
-		Name:        "minflt",
+		Name:        "resource_minflt",
 		Type:        counter,
 		Value:       r.Minflt,
 		Description: "total minor faults",
@@ -61,7 +61,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[4] = &point{
-		Name:        "majflt",
+		Name:        "resource_majflt",
 		Type:        counter,
 		Value:       r.Majflt,
 		Description: "total major faults",
@@ -69,7 +69,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[5] = &point{
-		Name:        "inblock",
+		Name:        "resource_inblock",
 		Type:        counter,
 		Value:       r.Inblock,
 		Description: "filesystem input operations",
@@ -77,7 +77,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[6] = &point{
-		Name:        "oublock",
+		Name:        "resource_oublock",
 		Type:        counter,
 		Value:       r.Outblock,
 		Description: "filesystem output operations",
@@ -85,7 +85,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[7] = &point{
-		Name:        "nvcsw",
+		Name:        "resource_nvcsw",
 		Type:        counter,
 		Value:       r.Nvcsw,
 		Description: "voluntary context switches",
@@ -93,7 +93,7 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[8] = &point{
-		Name:        "nivcsw",
+		Name:        "resource_nivcsw",
 		Type:        counter,
 		Value:       r.Nivcsw,
 		Description: "involuntary context switches",

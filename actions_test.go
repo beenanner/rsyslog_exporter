@@ -44,7 +44,7 @@ func TestActionToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "processed", point.Name; want != got {
+	if want, got := "action_processed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -61,7 +61,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[1]
-	if want, got := "failed", point.Name; want != got {
+	if want, got := "action_failed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -78,7 +78,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[2]
-	if want, got := "suspended", point.Name; want != got {
+	if want, got := "action_suspended", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -95,7 +95,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[3]
-	if want, got := "suspended_duration", point.Name; want != got {
+	if want, got := "action_suspended_duration", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -112,7 +112,7 @@ func TestActionToPoints(t *testing.T) {
 	}
 
 	point = points[4]
-	if want, got := "resumed", point.Name; want != got {
+	if want, got := "action_resumed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 

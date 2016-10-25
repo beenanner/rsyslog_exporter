@@ -48,7 +48,7 @@ func TestQueueToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "size", point.Name; want != got {
+	if want, got := "queue_size", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -63,7 +63,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[1]
-	if want, got := "enqueued", point.Name; want != got {
+	if want, got := "queue_enqueued", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -80,7 +80,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[2]
-	if want, got := "full", point.Name; want != got {
+	if want, got := "queue_full", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -97,7 +97,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[3]
-	if want, got := "discarded_full", point.Name; want != got {
+	if want, got := "queue_discarded_full", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -114,7 +114,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[4]
-	if want, got := "discarded_not_full", point.Name; want != got {
+	if want, got := "queue_discarded_not_full", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -131,7 +131,7 @@ func TestQueueToPoints(t *testing.T) {
 	}
 
 	point = points[5]
-	if want, got := "max_queue_size", point.Name; want != got {
+	if want, got := "queue_max_size", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 

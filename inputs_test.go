@@ -28,7 +28,7 @@ func TestInputtoPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "submitted", point.Name; want != got {
+	if want, got := "input_submitted", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
