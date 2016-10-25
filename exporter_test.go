@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 	exporter := newRsyslogExporter()
@@ -11,7 +14,7 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 	}
 
 	for _, item := range testCase {
-		p, err := exporter.get(item.Name)
+		p, err := exporter.get(item.key())
 		if err != nil {
 			t.Error(err)
 		}
@@ -24,7 +27,7 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 	exporter.handleStatLine(line)
 
 	for _, item := range testCase {
-		p, err := exporter.get(item.Name)
+		p, err := exporter.get(item.key())
 		if err != nil {
 			t.Error(err)
 		}
@@ -49,29 +52,39 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 type testUnit struct {
 	Name string
 	Val  float64
+	LabelValue string
+}
+
+func (t *testUnit) key() string {
+	return fmt.Sprintf("%s.%s", t.Name, t.LabelValue)
 }
 
 func TestHandleLineWithAction(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "test_action_processed",
+			Name: "processed",
 			Val:  100000,
+			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "test_action_failed",
+			Name: "failed",
 			Val:  2,
+			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "test_action_suspended",
+			Name: "suspended",
 			Val:  1,
+			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "test_action_suspended_duration",
+			Name: "suspended_duration",
 			Val:  1000,
+			LabelValue: "test_action",
 		},
 		&testUnit{
-			Name: "test_action_resumed",
+			Name: "resumed",
 			Val:  1,
+			LabelValue: "test_action",
 		},
 	}
 
@@ -82,40 +95,49 @@ func TestHandleLineWithAction(t *testing.T) {
 func TestHandleLineWithResource(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "resource-usage_utime",
+			Name: "utime",
 			Val:  10,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_stime",
+			Name: "stime",
 			Val:  20,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_maxrss",
+			Name: "maxrss",
 			Val:  30,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_minflt",
+			Name: "minflt",
 			Val:  40,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_majflt",
+			Name: "majflt",
 			Val:  50,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_inblock",
+			Name: "inblock",
 			Val:  60,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_oublock",
+			Name: "oublock",
 			Val:  70,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_nvcsw",
+			Name: "nvcsw",
 			Val:  80,
+			LabelValue: "resource-usage",
 		},
 		&testUnit{
-			Name: "resource-usage_nivcsw",
+			Name: "nivcsw",
 			Val:  90,
+			LabelValue: "resource-usage",
 		},
 	}
 
@@ -126,8 +148,9 @@ func TestHandleLineWithResource(t *testing.T) {
 func TestHandleLineWithInput(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "test_input_submitted",
+			Name: "submitted",
 			Val:  1000,
+			LabelValue: "test_input",
 		},
 	}
 
@@ -138,28 +161,34 @@ func TestHandleLineWithInput(t *testing.T) {
 func TestHandleLineWithQueue(t *testing.T) {
 	tests := []*testUnit{
 		&testUnit{
-			Name: "main_q_size",
+			Name: "size",
 			Val:  10,
+			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "main_q_enqueued",
+			Name: "enqueued",
 			Val:  20,
+			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "main_q_full",
+			Name: "full",
 			Val:  30,
+			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "main_q_discarded_full",
+			Name: "discarded_full",
 			Val:  40,
+			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "main_q_discarded_not_full",
+			Name: "discarded_not_full",
 			Val:  50,
+			LabelValue: "main_q",
 		},
 		&testUnit{
-			Name: "main_q_max_queue_size",
+			Name: "max_queue_size",
 			Val:  60,
+			LabelValue: "main_q",
 		},
 	}
 

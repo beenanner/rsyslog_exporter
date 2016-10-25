@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"strings"
 )
 
@@ -30,45 +29,51 @@ func (q *queue) toPoints() []*point {
 	points := make([]*point, 6)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_size", q.Name),
+		Name:        "size",
 		Type:        gauge,
 		Value:       q.Size,
 		Description: "messages currently in queue",
+		LabelValue:  q.Name,
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_enqueued", q.Name),
+		Name:        "enqueued",
 		Type:        counter,
 		Value:       q.Enqueued,
 		Description: "total messages enqueued",
+		LabelValue:  q.Name,
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_full", q.Name),
+		Name:        "full",
 		Type:        counter,
 		Value:       q.Full,
 		Description: "times queue was full",
+		LabelValue:  q.Name,
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_discarded_full", q.Name),
+		Name:        "discarded_full",
 		Type:        counter,
 		Value:       q.DiscardedFull,
 		Description: "messages discarded due to queue being full",
+		LabelValue:  q.Name,
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_discarded_not_full", q.Name),
+		Name:        "discarded_not_full",
 		Type:        counter,
 		Value:       q.DiscardedNf,
 		Description: "messages discarded when queue not full",
+		LabelValue:  q.Name,
 	}
 
 	points[5] = &point{
-		Name:        fmt.Sprintf("%s_max_queue_size", q.Name),
+		Name:        "max_queue_size",
 		Type:        gauge,
 		Value:       q.MaxQsize,
 		Description: "maximum size queue has reached",
+		LabelValue:  q.Name,
 	}
 
 	return points

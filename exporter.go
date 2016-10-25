@@ -107,6 +107,7 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 			p.promDescription(),
 			p.promType(),
 			p.promValue(),
+			p.promLabelValue(),
 		)
 
 		ch <- metric

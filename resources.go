@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 type resource struct {
@@ -30,66 +29,75 @@ func (r *resource) toPoints() []*point {
 	points := make([]*point, 9)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_utime", r.Name),
+		Name:        "utime",
 		Type:        counter,
 		Value:       r.Utime,
 		Description: "user time used in microseconds",
+		LabelValue:  r.Name,
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_stime", r.Name),
+		Name:        "stime",
 		Type:        counter,
 		Value:       r.Stime,
 		Description: "system time used in microsends",
+		LabelValue:  r.Name,
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_maxrss", r.Name),
+		Name:        "maxrss",
 		Type:        gauge,
 		Value:       r.Maxrss,
 		Description: "maximum resident set size",
+		LabelValue:  r.Name,
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_minflt", r.Name),
+		Name:        "minflt",
 		Type:        counter,
 		Value:       r.Minflt,
 		Description: "total minor faults",
+		LabelValue:  r.Name,
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_majflt", r.Name),
+		Name:        "majflt",
 		Type:        counter,
 		Value:       r.Majflt,
 		Description: "total major faults",
+		LabelValue:  r.Name,
 	}
 
 	points[5] = &point{
-		Name:        fmt.Sprintf("%s_inblock", r.Name),
+		Name:        "inblock",
 		Type:        counter,
 		Value:       r.Inblock,
 		Description: "filesystem input operations",
+		LabelValue:  r.Name,
 	}
 
 	points[6] = &point{
-		Name:        fmt.Sprintf("%s_oublock", r.Name),
+		Name:        "oublock",
 		Type:        counter,
 		Value:       r.Outblock,
 		Description: "filesystem output operations",
+		LabelValue:  r.Name,
 	}
 
 	points[7] = &point{
-		Name:        fmt.Sprintf("%s_nvcsw", r.Name),
+		Name:        "nvcsw",
 		Type:        counter,
 		Value:       r.Nvcsw,
 		Description: "voluntary context switches",
+		LabelValue:  r.Name,
 	}
 
 	points[8] = &point{
-		Name:        fmt.Sprintf("%s_nivcsw", r.Name),
+		Name:        "nivcsw",
 		Type:        counter,
 		Value:       r.Nivcsw,
 		Description: "involuntary context switches",
+		LabelValue:  r.Name,
 	}
 
 	return points

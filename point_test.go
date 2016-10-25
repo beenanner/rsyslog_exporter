@@ -48,7 +48,7 @@ func TestAddCounter(t *testing.T) {
 		t.Errorf("want '%v', got '%v'", want, got)
 	}
 
-	wanted := `Desc{fqName: "rsyslog_my counter", help: "", constLabels: {}, variableLabels: []}`
+	wanted := `Desc{fqName: "rsyslog_my counter", help: "", constLabels: {}, variableLabels: [name]}`
 	if want, got := wanted, p1.promDescription().String(); want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
@@ -95,7 +95,7 @@ func TestAddGauge(t *testing.T) {
 		t.Errorf("want '%v', got '%v'", want, got)
 	}
 
-	wanted := `Desc{fqName: "rsyslog_my gauge", help: "", constLabels: {}, variableLabels: []}`
+	wanted := `Desc{fqName: "rsyslog_my gauge", help: "", constLabels: {}, variableLabels: [name]}`
 	if want, got := wanted, p1.promDescription().String(); want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}

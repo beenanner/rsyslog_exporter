@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -23,6 +24,7 @@ type point struct {
 	Description string
 	Type        pointType
 	Value       int64
+	LabelValue  string
 }
 
 func (p *point) add(newPoint *point) error {
@@ -47,7 +49,8 @@ func (p *point) promDescription() *prometheus.Desc {
 	return prometheus.NewDesc(
 		prometheus.BuildFQName("", "rsyslog", p.Name),
 		p.Description,
-		nil, nil,
+		[]string{"name"},
+		nil,
 	)
 }
 
@@ -60,4 +63,12 @@ func (p *point) promType() prometheus.ValueType {
 
 func (p *point) promValue() float64 {
 	return float64(p.Value)
+}
+
+func (p *point) promLabelValue() string {
+	return p.LabelValue
+}
+
+func (p *point) key() string {
+	return fmt.Sprintf("%s.%s", p.Name, p.LabelValue)
 }

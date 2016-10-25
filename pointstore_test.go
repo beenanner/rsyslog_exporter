@@ -22,7 +22,7 @@ func TestPointStore(t *testing.T) {
 		t.Error(err)
 	}
 
-	got, err := ps.get(s1.Name)
+	got, err := ps.get(s1.key())
 	if err != nil {
 		t.Error(err)
 	}
@@ -36,7 +36,7 @@ func TestPointStore(t *testing.T) {
 		t.Error(err)
 	}
 
-	got, err = ps.get(s2.Name)
+	got, err = ps.get(s2.key())
 	if err != nil {
 		t.Error(err)
 	}
@@ -56,7 +56,7 @@ func TestPointStore(t *testing.T) {
 		t.Error(err)
 	}
 
-	got, err = ps.get(s3.Name)
+	got, err = ps.get(s3.key())
 	if err != nil {
 		t.Error(err)
 	}
@@ -76,7 +76,7 @@ func TestPointStore(t *testing.T) {
 		t.Error(err)
 	}
 
-	got, err = ps.get(s4.Name)
+	got, err = ps.get(s4.key())
 	if err != nil {
 		t.Error(err)
 	}

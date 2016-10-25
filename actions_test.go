@@ -44,7 +44,7 @@ func TestActionToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "test_action_processed", point.Name; want != got {
+	if want, got := "processed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -56,8 +56,12 @@ func TestActionToPoints(t *testing.T) {
 		t.Errorf("wanted '%d', got '%d'", want, got)
 	}
 
+	if want, got := "test_action", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[1]
-	if want, got := "test_action_failed", point.Name; want != got {
+	if want, got := "failed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -69,8 +73,12 @@ func TestActionToPoints(t *testing.T) {
 		t.Errorf("wanted '%d', got '%d'", want, got)
 	}
 
+	if want, got := "test_action", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[2]
-	if want, got := "test_action_suspended", point.Name; want != got {
+	if want, got := "suspended", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -82,8 +90,12 @@ func TestActionToPoints(t *testing.T) {
 		t.Errorf("wanted '%d', got '%d'", want, got)
 	}
 
+	if want, got := "test_action", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[3]
-	if want, got := "test_action_suspended_duration", point.Name; want != got {
+	if want, got := "suspended_duration", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -95,8 +107,12 @@ func TestActionToPoints(t *testing.T) {
 		t.Errorf("wanted '%d', got '%d'", want, got)
 	}
 
+	if want, got := "test_action", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[4]
-	if want, got := "test_action_resumed", point.Name; want != got {
+	if want, got := "resumed", point.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 
@@ -106,5 +122,9 @@ func TestActionToPoints(t *testing.T) {
 
 	if want, got := counter, point.Type; want != got {
 		t.Errorf("wanted '%d', got '%d'", want, got)
+	}
+
+	if want, got := "test_action", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 }

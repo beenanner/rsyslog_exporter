@@ -60,7 +60,7 @@ func TestResourceToPoints(t *testing.T) {
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "resource-usage_utime", point.Name; want != got {
+	if want, got := "utime", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -72,8 +72,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[1]
-	if want, got := "resource-usage_stime", point.Name; want != got {
+	if want, got := "stime", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -85,8 +89,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[2]
-	if want, got := "resource-usage_maxrss", point.Name; want != got {
+	if want, got := "maxrss", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -98,8 +106,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[3]
-	if want, got := "resource-usage_minflt", point.Name; want != got {
+	if want, got := "minflt", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -111,8 +123,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[4]
-	if want, got := "resource-usage_majflt", point.Name; want != got {
+	if want, got := "majflt", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -124,8 +140,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[5]
-	if want, got := "resource-usage_inblock", point.Name; want != got {
+	if want, got := "inblock", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -137,8 +157,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[6]
-	if want, got := "resource-usage_oublock", point.Name; want != got {
+	if want, got := "oublock", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -150,8 +174,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[7]
-	if want, got := "resource-usage_nvcsw", point.Name; want != got {
+	if want, got := "nvcsw", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -163,8 +191,12 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
+	}
+
 	point = points[8]
-	if want, got := "resource-usage_nivcsw", point.Name; want != got {
+	if want, got := "nivcsw", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
@@ -174,5 +206,9 @@ func TestResourceToPoints(t *testing.T) {
 
 	if want, got := counter, point.Type; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	if want, got := "resource-usage", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 }
