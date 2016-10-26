@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -116,9 +115,7 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 
 func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
-		if strings.Contains(re.scanner.Text(), "EOF") {
-			os.Exit(0)
-		}
 		re.handleStatLine(re.scanner.Bytes())
 	}
+	os.Exit(0)
 }
