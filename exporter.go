@@ -43,25 +43,25 @@ func (re *rsyslogExporter) handleStatLine(buf []byte) {
 	case rsyslogAction:
 		a := newActionFromJSON(buf)
 		for _, p := range a.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogInput:
 		i := newInputFromJSON(buf)
 		for _, p := range i.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogQueue:
 		q := newQueueFromJSON(buf)
 		for _, p := range q.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogResource:
 		r := newResourceFromJSON(buf)
 		for _, p := range r.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	default:

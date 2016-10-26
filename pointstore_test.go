@@ -17,7 +17,7 @@ func TestPointStore(t *testing.T) {
 		Value: int64(5),
 	}
 
-	err := ps.add(s1)
+	err := ps.set(s1)
 	if err != nil {
 		t.Error(err)
 	}
@@ -31,7 +31,7 @@ func TestPointStore(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	err = ps.add(s2)
+	err = ps.set(s2)
 	if err != nil {
 		t.Error(err)
 	}
@@ -41,7 +41,7 @@ func TestPointStore(t *testing.T) {
 		t.Error(err)
 	}
 
-	if want, got := int64(15), got.Value; want != got {
+	if want, got := int64(5), got.Value; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
@@ -51,7 +51,7 @@ func TestPointStore(t *testing.T) {
 		Value: int64(20),
 	}
 
-	err = ps.add(s3)
+	err = ps.set(s3)
 	if err != nil {
 		t.Error(err)
 	}
@@ -71,7 +71,7 @@ func TestPointStore(t *testing.T) {
 		Value: int64(15),
 	}
 
-	err = ps.add(s4)
+	err = ps.set(s4)
 	if err != nil {
 		t.Error(err)
 	}

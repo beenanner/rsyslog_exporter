@@ -35,7 +35,7 @@ func testHelper(t *testing.T, line []byte, testCase []*testUnit) {
 		var wanted float64
 		switch p.Type {
 		case counter:
-			wanted = item.Val * 2
+			wanted = item.Val
 		case gauge:
 			wanted = item.Val
 		default:
