@@ -136,5 +136,8 @@ func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
 		re.handleStatLine(re.scanner.Bytes())
 	}
+	if err := re.scanner.Err(); err != nil {
+		log.Printf("error reading input: %v", err)
+	}
 	os.Exit(0)
 }
