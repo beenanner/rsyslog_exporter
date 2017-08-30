@@ -20,7 +20,7 @@ func newActionFromJSON(b []byte) (*action, error) {
 	var pstat action
 	err := dec.Decode(&pstat)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode action stat %v: %v", b, err)
+		return nil, fmt.Errorf("failed to decode action stat `%v`: %v", string(b), err)
 	}
 	return &pstat, nil
 }

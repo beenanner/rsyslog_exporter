@@ -24,7 +24,7 @@ func newResourceFromJSON(b []byte) (*resource, error) {
 	var pstat resource
 	err := dec.Decode(&pstat)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode resource stat %v: %v", b, err)
+		return nil, fmt.Errorf("failed to decode resource stat `%v`: %v", string(b), err)
 	}
 	return &pstat, nil
 }

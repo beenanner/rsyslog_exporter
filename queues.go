@@ -21,7 +21,7 @@ func newQueueFromJSON(b []byte) (*queue, error) {
 	var pstat queue
 	err := dec.Decode(&pstat)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode queue stat %v: %v", string(b), err)
+		return nil, fmt.Errorf("failed to decode queue stat `%v`: %v", string(b), err)
 	}
 	return &pstat, nil
 }

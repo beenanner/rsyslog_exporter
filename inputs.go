@@ -16,7 +16,7 @@ func newInputFromJSON(b []byte) (*input, error) {
 	var pstat input
 	err := dec.Decode(&pstat)
 	if err != nil {
-		return nil, fmt.Errorf("error decoding input stat %v: %v", b, err)
+		return nil, fmt.Errorf("error decoding input stat `%v`: %v", string(b), err)
 	}
 	return &pstat, nil
 }
