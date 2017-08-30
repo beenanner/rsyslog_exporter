@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 type input struct {
@@ -10,11 +11,14 @@ type input struct {
 	Submitted int64  `json:"submitted"`
 }
 
-func newInputFromJSON(b []byte) *input {
+func newInputFromJSON(b []byte) (*input, error) {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat input
-	dec.Decode(&pstat)
-	return &pstat
+	err := dec.Decode(&pstat)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding input stat %v: %v", b, err)
+	}
+	return &pstat, nil
 }
 
 func (i *input) toPoints() []*point {

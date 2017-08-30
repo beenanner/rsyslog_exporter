@@ -12,7 +12,10 @@ func TestNewResourceFromJSON(t *testing.T) {
 		t.Errorf("detected pstat type should be %d but is %d", rsyslogResource, logType)
 	}
 
-	pstat := newResourceFromJSON([]byte(resourceLog))
+	pstat, err := newResourceFromJSON([]byte(resourceLog))
+	if err != nil {
+		t.Fatalf("expected parsing resource stat not to fail, got: %v", err)
+	}
 
 	if want, got := "resource-usage", pstat.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
@@ -56,7 +59,10 @@ func TestNewResourceFromJSON(t *testing.T) {
 }
 
 func TestResourceToPoints(t *testing.T) {
-	pstat := newResourceFromJSON([]byte(resourceLog))
+	pstat, err := newResourceFromJSON([]byte(resourceLog))
+	if err != nil {
+		t.Fatalf("expected parsing resource stat not to fail, got: %v", err)
+	}
 	points := pstat.toPoints()
 
 	point := points[0]

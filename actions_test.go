@@ -12,7 +12,10 @@ func TestNewActionFromJSON(t *testing.T) {
 		t.Errorf("detected pstat type should be %d but is %d", rsyslogAction, logType)
 	}
 
-	pstat := newActionFromJSON([]byte(actionLog))
+	pstat, err := newActionFromJSON([]byte(actionLog))
+	if err != nil {
+		t.Fatalf("expected parsing action not to fail, got: %v", err)
+	}
 
 	if want, got := "test_action", pstat.Name; want != got {
 		t.Errorf("wanted '%s', got '%s'", want, got)
@@ -40,7 +43,10 @@ func TestNewActionFromJSON(t *testing.T) {
 }
 
 func TestActionToPoints(t *testing.T) {
-	pstat := newActionFromJSON([]byte(actionLog))
+	pstat, err := newActionFromJSON([]byte(actionLog))
+	if err != nil {
+		t.Fatalf("expected parsing action not to fail, got: %v", err)
+	}
 	points := pstat.toPoints()
 
 	point := points[0]

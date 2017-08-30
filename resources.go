@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 type resource struct {
@@ -18,11 +19,14 @@ type resource struct {
 	Nivcsw   int64  `json:"nivcsw"`
 }
 
-func newResourceFromJSON(b []byte) *resource {
+func newResourceFromJSON(b []byte) (*resource, error) {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat resource
-	dec.Decode(&pstat)
-	return &pstat
+	err := dec.Decode(&pstat)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode resource stat %v: %v", b, err)
+	}
+	return &pstat, nil
 }
 
 func (r *resource) toPoints() []*point {

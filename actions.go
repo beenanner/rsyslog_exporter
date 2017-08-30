@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 type action struct {
@@ -14,11 +15,14 @@ type action struct {
 	Resumed           int64  `json:"resumed"`
 }
 
-func newActionFromJSON(b []byte) *action {
+func newActionFromJSON(b []byte) (*action, error) {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat action
-	dec.Decode(&pstat)
-	return &pstat
+	err := dec.Decode(&pstat)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode action stat %v: %v", b, err)
+	}
+	return &pstat, nil
 }
 
 func (a *action) toPoints() []*point {

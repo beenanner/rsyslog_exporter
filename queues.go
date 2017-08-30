@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 type queue struct {
@@ -15,11 +16,14 @@ type queue struct {
 	MaxQsize      int64  `json:"maxqsize"`
 }
 
-func newQueueFromJSON(b []byte) *queue {
+func newQueueFromJSON(b []byte) (*queue, error) {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat queue
-	dec.Decode(&pstat)
-	return &pstat
+	err := dec.Decode(&pstat)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode queue stat %v: %v", string(b), err)
+	}
+	return &pstat, nil
 }
 
 func (q *queue) toPoints() []*point {

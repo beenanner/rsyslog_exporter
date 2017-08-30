@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"log"
 	"os"
 	"sync"
 
@@ -38,33 +39,51 @@ func newRsyslogExporter() *rsyslogExporter {
 
 func (re *rsyslogExporter) handleStatLine(buf []byte) {
 	pstatType := getStatType(buf)
+	log.Printf("pstatType: %+v", pstatType)
 
 	switch pstatType {
 	case rsyslogAction:
-		a := newActionFromJSON(buf)
+		a, err := newActionFromJSON(buf)
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		for _, p := range a.toPoints() {
 			re.set(p)
 		}
 
 	case rsyslogInput:
-		i := newInputFromJSON(buf)
+		i, err := newInputFromJSON(buf)
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		for _, p := range i.toPoints() {
 			re.set(p)
 		}
 
 	case rsyslogQueue:
-		q := newQueueFromJSON(buf)
+		q, err := newQueueFromJSON(buf)
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		for _, p := range q.toPoints() {
 			re.set(p)
 		}
 
 	case rsyslogResource:
-		r := newResourceFromJSON(buf)
+		r, err := newResourceFromJSON(buf)
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		for _, p := range r.toPoints() {
 			re.set(p)
 		}
 
 	default:
+		log.Printf("unknown pstat type: %v", pstatType)
 	}
 }
 

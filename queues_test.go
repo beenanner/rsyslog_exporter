@@ -12,7 +12,10 @@ func TestNewQueueFromJSON(t *testing.T) {
 		t.Errorf("detected pstat type should be %d but is %d", rsyslogQueue, logType)
 	}
 
-	pstat := newQueueFromJSON([]byte(queueLog))
+	pstat, err := newQueueFromJSON([]byte(queueLog))
+	if err != nil {
+		t.Fatalf("expected parsing queue stat not to fail, got: %v", err)
+	}
 
 	if want, got := "main Q", pstat.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
@@ -44,7 +47,10 @@ func TestNewQueueFromJSON(t *testing.T) {
 }
 
 func TestQueueToPoints(t *testing.T) {
-	pstat := newQueueFromJSON([]byte(queueLog))
+	pstat, err := newQueueFromJSON([]byte(queueLog))
+	if err != nil {
+		t.Fatalf("expected parsing queue stat not to fail, got: %v", err)
+	}
 	points := pstat.toPoints()
 
 	point := points[0]
