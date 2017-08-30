@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"sync"
@@ -38,17 +39,20 @@ func newRsyslogExporter() *rsyslogExporter {
 	return e
 }
 
-func (re *rsyslogExporter) handleStatLine(rawbuf []byte) {
-	buf := bytes.SplitN(rawbuf, []byte(" "), 4)[3]
+func (re *rsyslogExporter) handleStatLine(rawbuf []byte) error {
+	s := bytes.SplitN(rawbuf, []byte(" "), 4)
+	if len(s) != 4 {
+		return fmt.Errorf("failed to split log line, expected 4 columns, got: %v", len(s))
+	}
+	buf := s[3]
+
 	pstatType := getStatType(buf)
-	log.Printf("pstatType: %+v", pstatType)
 
 	switch pstatType {
 	case rsyslogAction:
 		a, err := newActionFromJSON(buf)
 		if err != nil {
-			log.Print(err)
-			return
+			return err
 		}
 		for _, p := range a.toPoints() {
 			re.set(p)
@@ -57,8 +61,7 @@ func (re *rsyslogExporter) handleStatLine(rawbuf []byte) {
 	case rsyslogInput:
 		i, err := newInputFromJSON(buf)
 		if err != nil {
-			log.Print(err)
-			return
+			return err
 		}
 		for _, p := range i.toPoints() {
 			re.set(p)
@@ -67,8 +70,7 @@ func (re *rsyslogExporter) handleStatLine(rawbuf []byte) {
 	case rsyslogQueue:
 		q, err := newQueueFromJSON(buf)
 		if err != nil {
-			log.Print(err)
-			return
+			return err
 		}
 		for _, p := range q.toPoints() {
 			re.set(p)
@@ -77,16 +79,16 @@ func (re *rsyslogExporter) handleStatLine(rawbuf []byte) {
 	case rsyslogResource:
 		r, err := newResourceFromJSON(buf)
 		if err != nil {
-			log.Print(err)
-			return
+			return err
 		}
 		for _, p := range r.toPoints() {
 			re.set(p)
 		}
 
 	default:
-		log.Printf("unknown pstat type: %v", pstatType)
+		return fmt.Errorf("unknown pstat type: %v", pstatType)
 	}
+	return nil
 }
 
 // Describe sends the description of currently known metrics collected
@@ -136,7 +138,10 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 
 func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
-		re.handleStatLine(re.scanner.Bytes())
+		err := re.handleStatLine(re.scanner.Bytes())
+		if err != nil {
+			log.Print(err)
+		}
 	}
 	if err := re.scanner.Err(); err != nil {
 		log.Printf("error reading input: %v", err)
