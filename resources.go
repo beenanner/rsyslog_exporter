@@ -35,6 +35,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Utime,
 		Description: "user time used in microseconds",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -43,6 +44,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Stime,
 		Description: "system time used in microsends",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -51,6 +53,7 @@ func (r *resource) toPoints() []*point {
 		Type:        gauge,
 		Value:       r.Maxrss,
 		Description: "maximum resident set size",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -59,6 +62,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Minflt,
 		Description: "total minor faults",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -67,6 +71,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Majflt,
 		Description: "total major faults",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -75,6 +80,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Inblock,
 		Description: "filesystem input operations",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -83,6 +89,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Outblock,
 		Description: "filesystem output operations",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -91,6 +98,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Nvcsw,
 		Description: "voluntary context switches",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 
@@ -99,6 +107,7 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Nivcsw,
 		Description: "involuntary context switches",
+		LabelName:   "resource",
 		LabelValue:  r.Name,
 	}
 

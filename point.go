@@ -24,6 +24,7 @@ type point struct {
 	Description string
 	Type        pointType
 	Value       int64
+	LabelName   string
 	LabelValue  string
 }
 
@@ -31,7 +32,7 @@ func (p *point) promDescription() *prometheus.Desc {
 	return prometheus.NewDesc(
 		prometheus.BuildFQName("", "rsyslog", p.Name),
 		p.Description,
-		[]string{"name"},
+		[]string{p.promLabelName()},
 		nil,
 	)
 }
@@ -49,6 +50,10 @@ func (p *point) promValue() float64 {
 
 func (p *point) promLabelValue() string {
 	return p.LabelValue
+}
+
+func (p *point) promLabelName() string {
+	return p.LabelName
 }
 
 func (p *point) key() string {

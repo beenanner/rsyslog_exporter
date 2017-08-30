@@ -27,6 +27,7 @@ func (i *input) toPoints() []*point {
 		Type:        counter,
 		Value:       i.Submitted,
 		Description: "messages submitted",
+		LabelName:   "input",
 		LabelValue:  i.Name,
 	}
 

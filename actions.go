@@ -31,6 +31,7 @@ func (a *action) toPoints() []*point {
 		Type:        counter,
 		Value:       a.Processed,
 		Description: "messages processed",
+		LabelName:   "action",
 		LabelValue:  a.Name,
 	}
 
@@ -39,6 +40,7 @@ func (a *action) toPoints() []*point {
 		Type:        counter,
 		Value:       a.Failed,
 		Description: "messages failed",
+		LabelName:   "action",
 		LabelValue:  a.Name,
 	}
 
@@ -47,6 +49,7 @@ func (a *action) toPoints() []*point {
 		Type:        counter,
 		Value:       a.Suspended,
 		Description: "times suspended",
+		LabelName:   "action",
 		LabelValue:  a.Name,
 	}
 
@@ -55,6 +58,7 @@ func (a *action) toPoints() []*point {
 		Type:        counter,
 		Value:       a.SuspendedDuration,
 		Description: "time spent suspended",
+		LabelName:   "action",
 		LabelValue:  a.Name,
 	}
 
@@ -63,6 +67,7 @@ func (a *action) toPoints() []*point {
 		Type:        counter,
 		Value:       a.Resumed,
 		Description: "times resumed",
+		LabelName:   "action",
 		LabelValue:  a.Name,
 	}
 
