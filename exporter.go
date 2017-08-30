@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"log"
 	"os"
 	"sync"
@@ -37,7 +38,8 @@ func newRsyslogExporter() *rsyslogExporter {
 	return e
 }
 
-func (re *rsyslogExporter) handleStatLine(buf []byte) {
+func (re *rsyslogExporter) handleStatLine(rawbuf []byte) {
+	buf := bytes.SplitN(rawbuf, []byte(" "), 4)[3]
 	pstatType := getStatType(buf)
 	log.Printf("pstatType: %+v", pstatType)
 

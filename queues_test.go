@@ -3,16 +3,16 @@ package main
 import "testing"
 
 var (
-	queueLog = []byte(`{"name":"main Q","size":10,"enqueued":20,"full":30,"discarded.full":40,"discarded.nf":50,"maxqsize":60}`)
+	queueStat = []byte(`{"name":"main Q","size":10,"enqueued":20,"full":30,"discarded.full":40,"discarded.nf":50,"maxqsize":60}`)
 )
 
 func TestNewQueueFromJSON(t *testing.T) {
-	logType := getStatType(queueLog)
+	logType := getStatType(queueStat)
 	if logType != rsyslogQueue {
 		t.Errorf("detected pstat type should be %d but is %d", rsyslogQueue, logType)
 	}
 
-	pstat, err := newQueueFromJSON([]byte(queueLog))
+	pstat, err := newQueueFromJSON([]byte(queueStat))
 	if err != nil {
 		t.Fatalf("expected parsing queue stat not to fail, got: %v", err)
 	}
@@ -47,7 +47,7 @@ func TestNewQueueFromJSON(t *testing.T) {
 }
 
 func TestQueueToPoints(t *testing.T) {
-	pstat, err := newQueueFromJSON([]byte(queueLog))
+	pstat, err := newQueueFromJSON([]byte(queueStat))
 	if err != nil {
 		t.Fatalf("expected parsing queue stat not to fail, got: %v", err)
 	}
