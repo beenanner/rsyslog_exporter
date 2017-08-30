@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -42,8 +43,6 @@ func main() {
 `))
 	})
 
-	err := http.ListenAndServe(*listenAddress, nil)
-	if err != nil {
-		panic(err)
-	}
+	log.Printf("Listening on %s", *listenAddress)
+	log.Fatal(http.ListenAndServe(*listenAddress, nil))
 }
