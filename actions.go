@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -16,9 +15,8 @@ type action struct {
 }
 
 func newActionFromJSON(b []byte) (*action, error) {
-	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat action
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode action stat `%v`: %v", string(b), err)
 	}

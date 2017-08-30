@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -17,9 +16,8 @@ type queue struct {
 }
 
 func newQueueFromJSON(b []byte) (*queue, error) {
-	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat queue
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode queue stat `%v`: %v", string(b), err)
 	}

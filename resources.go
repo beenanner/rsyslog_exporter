@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -20,9 +19,8 @@ type resource struct {
 }
 
 func newResourceFromJSON(b []byte) (*resource, error) {
-	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat resource
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode resource stat `%v`: %v", string(b), err)
 	}

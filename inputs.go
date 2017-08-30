@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -12,9 +11,8 @@ type input struct {
 }
 
 func newInputFromJSON(b []byte) (*input, error) {
-	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat input
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
 		return nil, fmt.Errorf("error decoding input stat `%v`: %v", string(b), err)
 	}
