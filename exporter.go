@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 
@@ -39,6 +40,11 @@ func newRsyslogExporter() *rsyslogExporter {
 
 func (re *rsyslogExporter) handleStatLine(buf []byte) {
 	pstatType := getStatType(buf)
+	// Clean up the input if it contains the whole syslog message and not just the JSON
+	regex := regexp.MustCompile("^.*?{")
+	buf = regex.ReplaceAll(buf, []byte("{"))
+
+	// fmt.Fprintf(os.Stderr, "input: %s\n", buf)
 
 	switch pstatType {
 	case rsyslogAction:
