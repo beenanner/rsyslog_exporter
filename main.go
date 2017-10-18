@@ -7,6 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
 )
@@ -50,7 +51,7 @@ func main() {
 	log.Infoln("Build context", version.BuildContext())
 
 	prometheus.MustRegister(exporter)
-	http.Handle(*metricPath, prometheus.Handler())
+	http.Handle(*metricPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write(landingPage)
 	})
