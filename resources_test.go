@@ -3,7 +3,7 @@ package main
 import "testing"
 
 var (
-	resourceLog = []byte(`{"name":"resource-usage","utime":10,"stime":20,"maxrss":30,"minflt":40,"majflt":50,"inblock":60,"oublock":70,"nvcsw":80,"nivcsw":90}`)
+	resourceLog = []byte(`{"name":"resource-usage","utime":10,"stime":20,"maxrss":30,"minflt":40,"majflt":50,"inblock":60,"oublock":70,"nvcsw":80,"nivcsw":90,"openfiles":100}`)
 )
 
 func TestNewResourceFromJSON(t *testing.T) {
@@ -51,6 +51,10 @@ func TestNewResourceFromJSON(t *testing.T) {
 	}
 
 	if want, got := int64(90), pstat.Nivcsw; want != got {
+		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	if want, got := int64(100), pstat.Openfiles; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 }
@@ -169,6 +173,19 @@ func TestResourceToPoints(t *testing.T) {
 	}
 
 	if want, got := int64(90), point.Value; want != got {
+		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	if want, got := counter, point.Type; want != got {
+		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	point = points[9]
+	if want, got := "resource-usage_openfiles", point.Name; want != got {
+		t.Errorf("want '%s', got '%s'", want, got)
+	}
+
+	if want, got := int64(100), point.Value; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 

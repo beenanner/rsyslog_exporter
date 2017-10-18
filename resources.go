@@ -9,16 +9,17 @@ import (
 )
 
 type resource struct {
-	Name     string `json:"name"`
-	Utime    int64  `json:"utime"`
-	Stime    int64  `json:"stime"`
-	Maxrss   int64  `json:"maxrss"`
-	Minflt   int64  `json:"minflt"`
-	Majflt   int64  `json:"majflt"`
-	Inblock  int64  `json:"inblock"`
-	Outblock int64  `json:"oublock"`
-	Nvcsw    int64  `json:"nvcsw"`
-	Nivcsw   int64  `json:"nivcsw"`
+	Name      string `json:"name"`
+	Utime     int64  `json:"utime"`
+	Stime     int64  `json:"stime"`
+	Maxrss    int64  `json:"maxrss"`
+	Minflt    int64  `json:"minflt"`
+	Majflt    int64  `json:"majflt"`
+	Inblock   int64  `json:"inblock"`
+	Outblock  int64  `json:"oublock"`
+	Nvcsw     int64  `json:"nvcsw"`
+	Nivcsw    int64  `json:"nivcsw"`
+	Openfiles int64  `json:"openfiles"`
 }
 
 func newResourceFromJSON(b []byte) *resource {
@@ -32,7 +33,7 @@ func newResourceFromJSON(b []byte) *resource {
 }
 
 func (r *resource) toPoints() []*point {
-	points := make([]*point, 9)
+	points := make([]*point, 10)
 
 	points[0] = &point{
 		Name:        fmt.Sprintf("%s_utime", r.Name),
@@ -95,6 +96,13 @@ func (r *resource) toPoints() []*point {
 		Type:        counter,
 		Value:       r.Nivcsw,
 		Description: "involuntary context switches",
+	}
+
+	points[9] = &point{
+		Name:        fmt.Sprintf("%s_openfiles", r.Name),
+		Type:        counter,
+		Value:       r.Openfiles,
+		Description: "open files",
 	}
 
 	return points
