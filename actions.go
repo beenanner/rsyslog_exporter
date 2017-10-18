@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/prometheus/common/log"
 )
 
 type action struct {
@@ -19,7 +21,10 @@ type action struct {
 func newActionFromJSON(b []byte) *action {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat action
-	dec.Decode(&pstat)
+	err := dec.Decode(&pstat)
+	if err != nil {
+		log.Errorf("Could not unmarshall json input '%s': %s", b, err)
+	}
 	pstat.Name = strings.ToLower(pstat.Name)
 	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
 	return &pstat

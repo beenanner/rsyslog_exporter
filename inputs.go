@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/prometheus/common/log"
 )
 
 type input struct {
@@ -14,7 +16,10 @@ type input struct {
 func newInputFromJSON(b []byte) *input {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat input
-	dec.Decode(&pstat)
+	err := dec.Decode(&pstat)
+	if err != nil {
+		log.Errorf("Could not unmarshall json input '%s': %s", b, err)
+	}
 	return &pstat
 }
 

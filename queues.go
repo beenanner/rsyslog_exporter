@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/prometheus/common/log"
 )
 
 type queue struct {
@@ -20,7 +22,10 @@ type queue struct {
 func newQueueFromJSON(b []byte) *queue {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	var pstat queue
-	dec.Decode(&pstat)
+	err := dec.Decode(&pstat)
+	if err != nil {
+		log.Errorf("Could not unmarshall json input '%s': %s", b, err)
+	}
 	pstat.Name = strings.ToLower(pstat.Name)
 	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
 	return &pstat
