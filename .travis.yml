@@ -1,10 +1,23 @@
 language: go
 
 go:
-    - 1.4
-
-install:
-    - go get github.com/digitalocean/rsyslog_exporter
+- 1.9.x
 
 script:
-    - make test
+- make style vet test build
+
+before_deploy:
+- make promu
+- promu crossbuild
+- promu crossbuild tarballs
+- promu checksum .tarballs
+
+deploy:
+  provider: releases
+  api_key:
+    secure: BZ+g0v6YqrNukblkGacSerDrFHU/PrFMxPP6zoy7+XSrmalO97RRgMLCpjA8NPUatiiByV0LiUxJyDvAEXjCvDmIpKYuEoMPmhiUzsCbxxRx1iI4+aQXHt9xOXgc4sQAxJgaxnFgXeH7D86kvkRhjHO+gpavOP1erHFcJn4lHzd6Dp4TEwd7I0XZD//QJP5ArdPHY6E8gH/526MQfnwVDLHm/FJTUcb8FfzK+F0LEBqEnso+moi8+/MM479nmJj18nYOe472DVSDO/Z0EeUKtfQKgguNOEI2g3pJIZn8+vSFnGBf9M1yuXS6wRjSmOBm0SZTO/usZY4m0N9p8S/23sCrXJ5neM7YfpCYsZt3uB9yn0DhpKcysce6EZM+yrA1m/e9pLksmtJvFsbzivnGksnF6OYPyVwBwkXCtGVCUtCew2qPYynhYcOGPEvLmp9U4hpkbpqMzokMFKl6zMzwzyPBSl9UMclXPkKjVAx5tb7FrjUxCD/p/LwHA4PNQyBl1wX6vp2ovhCOowuwtRJgRPstK7f7kMltKt0D/lZsmXWw2QNdCEp54p3tN9Hpn57LkMQCDm9ZVRlNYS/HWGLJaANh2vztv9L+OuX/fBA6IpbM07xCGieFPlzISsNz4dn+U3bYrS/6/hxWu0whkpAmTGlsNsiTa5A/6anHdfcqqH0=
+  file_glob: true
+  file: ".tarballs/*"
+  skip_cleanup: true
+  on:
+    tags: true
