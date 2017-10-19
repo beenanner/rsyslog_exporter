@@ -189,7 +189,7 @@ func TestResourceToPoints(t *testing.T) {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 
-	if want, got := counter, point.Type; want != got {
+	if want, got := gauge, point.Type; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
 	}
 }
