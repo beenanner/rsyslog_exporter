@@ -1,4 +1,5 @@
 # rsyslog_exporter [![Build Status](https://travis-ci.org/digitalocean/rsyslog_exporter.svg?branch=master)](https://travis-ci.org/digitalocean/rsyslog_exporter)
+
 A [prometheus](http://prometheus.io/) exporter for [rsyslog](http://rsyslog.com). It accepts rsyslog [impstats](http://www.rsyslog.com/doc/master/configuration/modules/impstats.html) metrics in JSON format over stdin via the rsyslog [omprog](http://www.rsyslog.com/doc/v8-stable/configuration/modules/omprog.html) plugin and transforms and exposes them for consumption by Prometheus.
 
 ## Rsyslog Configuration
@@ -20,6 +21,8 @@ ruleset(name="process_stats") {
   )
 }
 ```
+
+The exporter itself logs back via syslog, this cannot be configured at the moment.
 
 ## Provided Metrics
 The following metrics provided by the rsyslog impstats module are tracked by rsyslog_exporter:

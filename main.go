@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"log/syslog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,6 +17,11 @@ var (
 )
 
 func main() {
+	logwriter, e := syslog.New(syslog.LOG_NOTICE, "rsyslog_exporter")
+	if e == nil {
+		log.SetOutput(logwriter)
+	}
+
 	flag.Parse()
 	exporter := newRsyslogExporter()
 
@@ -23,6 +29,7 @@ func main() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt)
 		<-c
+		log.Print("interrupt received, exiting")
 		os.Exit(0)
 	}()
 
