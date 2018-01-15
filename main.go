@@ -17,7 +17,7 @@ var (
 )
 
 func main() {
-	logwriter, e := syslog.New(syslog.LOG_NOTICE, "rsyslog_exporter")
+	logwriter, e := syslog.New(syslog.LOG_NOTICE|syslog.LOG_SYSLOG, "rsyslog_exporter")
 	if e == nil {
 		log.SetOutput(logwriter)
 	}
