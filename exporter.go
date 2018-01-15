@@ -138,10 +138,9 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 
 func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
-		log.Printf("received line: %s", re.scanner.Bytes())
 		err := re.handleStatLine(re.scanner.Bytes())
 		if err != nil {
-			log.Printf("error handling stats line: %v", err)
+			log.Printf("error handling stats line: %v, line was: %v", err, re.scanner.Bytes())
 		}
 	}
 	if err := re.scanner.Err(); err != nil {
