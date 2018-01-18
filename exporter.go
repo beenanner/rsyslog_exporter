@@ -19,6 +19,7 @@ const (
 	rsyslogInput
 	rsyslogQueue
 	rsyslogResource
+	rsyslogDynStat
 )
 
 type rsyslogExporter struct {
@@ -82,6 +83,14 @@ func (re *rsyslogExporter) handleStatLine(rawbuf []byte) error {
 			return err
 		}
 		for _, p := range r.toPoints() {
+			re.set(p)
+		}
+	case rsyslogDynStat:
+		s, err := newDynStatFromJSON(buf)
+		if err != nil {
+			return err
+		}
+		for _, p := range s.toPoints() {
 			re.set(p)
 		}
 

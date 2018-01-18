@@ -196,6 +196,40 @@ func TestHandleLineWithQueue(t *testing.T) {
 	testHelper(t, queueLog, tests)
 }
 
+func TestHandleLineWithGlobal(t *testing.T) {
+	tests := []*testUnit{
+		&testUnit{
+			Name:       "dynstat_global",
+			Val:        1,
+			LabelValue: "msg_per_host.ops_overflow",
+		},
+		&testUnit{
+			Name:       "dynstat_global",
+			Val:        3,
+			LabelValue: "msg_per_host.new_metric_add",
+		},
+		&testUnit{
+			Name:       "dynstat_global",
+			Val:        0,
+			LabelValue: "msg_per_host.no_metric",
+		},
+		&testUnit{
+			Name:       "dynstat_global",
+			Val:        0,
+			LabelValue: "msg_per_host.metrics_purged",
+		},
+		&testUnit{
+			Name:       "dynstat_global",
+			Val:        0,
+			LabelValue: "msg_per_host.ops_ignored",
+		},
+	}
+
+	log := []byte(`2018-01-18T09:39:12.763025+00:00 some-node.example.org rsyslogd-pstats: { "name": "global", "origin": "dynstats", "values": { "msg_per_host.ops_overflow": 1, "msg_per_host.new_metric_add": 3, "msg_per_host.no_metric": 0, "msg_per_host.metrics_purged": 0, "msg_per_host.ops_ignored": 0 } }`)
+
+	testHelper(t, log, tests)
+}
+
 func TestHandleUnknown(t *testing.T) {
 	unknownLog := []byte(`2017-08-30T08:10:04.786350+00:00 some-node.example.org rsyslogd-pstats: {"a":"b"}`)
 
