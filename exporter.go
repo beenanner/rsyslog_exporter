@@ -140,7 +140,7 @@ func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
 		err := re.handleStatLine(re.scanner.Bytes())
 		if err != nil {
-			log.Printf("error handling stats line: %v, line was: %v", err, re.scanner.Bytes())
+			log.Printf("error handling stats line: %v, line was: %s", err, re.scanner.Bytes())
 		}
 	}
 	if err := re.scanner.Err(); err != nil {
