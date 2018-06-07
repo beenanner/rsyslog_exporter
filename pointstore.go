@@ -33,14 +33,10 @@ func (ps *pointStore) keys() []string {
 	return keys
 }
 
-func (ps *pointStore) add(p *point) error {
+func (ps *pointStore) set(p *point) error {
 	var err error
 	ps.lock.Lock()
-	if _, ok := ps.pointMap[p.Name]; ok {
-		err = ps.pointMap[p.Name].add(p)
-	} else {
-		ps.pointMap[p.Name] = p
-	}
+	ps.pointMap[p.key()] = p
 	ps.lock.Unlock()
 	return err
 }

@@ -12,7 +12,10 @@ func TestGetInput(t *testing.T) {
 		t.Errorf("detected pstat type should be %d but is %d", rsyslogInput, logType)
 	}
 
-	pstat := newInputFromJSON([]byte(inputLog))
+	pstat, err := newInputFromJSON([]byte(inputLog))
+	if err != nil {
+		t.Fatalf("expected parsing input stat not to fail, got: %v", err)
+	}
 
 	if want, got := "test_input", pstat.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
@@ -24,15 +27,23 @@ func TestGetInput(t *testing.T) {
 }
 
 func TestInputtoPoints(t *testing.T) {
-	pstat := newInputFromJSON([]byte(inputLog))
+	pstat, err := newInputFromJSON([]byte(inputLog))
+	if err != nil {
+		t.Fatalf("expected parsing input stat not to fail, got: %v", err)
+	}
+
 	points := pstat.toPoints()
 
 	point := points[0]
-	if want, got := "test_input_submitted", point.Name; want != got {
+	if want, got := "input_submitted", point.Name; want != got {
 		t.Errorf("want '%s', got '%s'", want, got)
 	}
 
 	if want, got := int64(1000), point.Value; want != got {
 		t.Errorf("want '%d', got '%d'", want, got)
+	}
+
+	if want, got := "test_input", point.LabelValue; want != got {
+		t.Errorf("wanted '%s', got '%s'", want, got)
 	}
 }

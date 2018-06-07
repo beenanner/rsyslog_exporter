@@ -12,6 +12,8 @@ func getStatType(buf []byte) rsyslogType {
 		return rsyslogQueue
 	} else if strings.Contains(line, "utime") {
 		return rsyslogResource
+	} else if strings.Contains(line, "dynstats") {
+		return rsyslogDynStat
 	}
 	return rsyslogUnknown
 }

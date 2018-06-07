@@ -2,13 +2,15 @@ package main
 
 import (
 	"flag"
+	"log"
+	"log/syslog"
 	"net/http"
 	"os"
 	"os/signal"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/prometheus/common/log"
+	promlog "github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
 )
 
@@ -33,6 +35,11 @@ func init() {
 }
 
 func main() {
+	logwriter, e := syslog.New(syslog.LOG_NOTICE|syslog.LOG_SYSLOG, "rsyslog_exporter")
+	if e == nil {
+		log.SetOutput(logwriter)
+	}
+
 	flag.Parse()
 	exporter := newRsyslogExporter()
 
@@ -40,6 +47,7 @@ func main() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt)
 		<-c
+		log.Print("interrupt received, exiting")
 		os.Exit(0)
 	}()
 
@@ -47,8 +55,8 @@ func main() {
 		exporter.run()
 	}()
 
-	log.Infoln("Starting rsyslog_exporter", version.Info())
-	log.Infoln("Build context", version.BuildContext())
+	promlog.Infoln("Starting rsyslog_exporter", version.Info())
+	promlog.Infoln("Build context", version.BuildContext())
 
 	prometheus.MustRegister(exporter)
 	http.Handle(*metricPath, promhttp.Handler())
@@ -56,6 +64,6 @@ func main() {
 		w.Write(landingPage)
 	})
 
-	log.Infoln("Listening on", *listenAddress)
+	log.Printf("Listening on %s", *listenAddress)
 	log.Fatal(http.ListenAndServe(*listenAddress, nil))
 }
