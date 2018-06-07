@@ -60,7 +60,7 @@ func main() {
 		w.Write(landingPage)
 	})
 
-	log.Infoln("Listening on %s", *listenAddress)
+	log.Infoln("Listening on", *listenAddress)
 	err := http.ListenAndServe(*listenAddress, nil)
 	if err != nil {
 		log.Fatal(err)
