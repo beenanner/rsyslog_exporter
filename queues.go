@@ -1,12 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"strings"
-
-	"github.com/prometheus/common/log"
 )
 
 type queue struct {
@@ -19,61 +15,70 @@ type queue struct {
 	MaxQsize      int64  `json:"maxqsize"`
 }
 
-func newQueueFromJSON(b []byte) *queue {
-	dec := json.NewDecoder(bytes.NewReader(b))
+func newQueueFromJSON(b []byte) (*queue, error) {
 	var pstat queue
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
-		log.Errorf("Could not unmarshall json input '%s': %s", b, err)
+		return nil, fmt.Errorf("failed to decode queue stat `%v`: %v", string(b), err)
 	}
-	pstat.Name = strings.ToLower(pstat.Name)
-	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
-	return &pstat
+	return &pstat, nil
 }
 
 func (q *queue) toPoints() []*point {
 	points := make([]*point, 6)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_size", q.Name),
+		Name:        "queue_size",
 		Type:        gauge,
 		Value:       q.Size,
 		Description: "messages currently in queue",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_enqueued", q.Name),
+		Name:        "queue_enqueued",
 		Type:        counter,
 		Value:       q.Enqueued,
 		Description: "total messages enqueued",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_full", q.Name),
+		Name:        "queue_full",
 		Type:        counter,
 		Value:       q.Full,
 		Description: "times queue was full",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_discarded_full", q.Name),
+		Name:        "queue_discarded_full",
 		Type:        counter,
 		Value:       q.DiscardedFull,
 		Description: "messages discarded due to queue being full",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_discarded_not_full", q.Name),
+		Name:        "queue_discarded_not_full",
 		Type:        counter,
 		Value:       q.DiscardedNf,
 		Description: "messages discarded when queue not full",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	points[5] = &point{
-		Name:        fmt.Sprintf("%s_max_queue_size", q.Name),
+		Name:        "queue_max_size",
 		Type:        gauge,
 		Value:       q.MaxQsize,
 		Description: "maximum size queue has reached",
+		LabelName:   "queue",
+		LabelValue:  q.Name,
 	}
 
 	return points

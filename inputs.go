@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-
-	"github.com/prometheus/common/log"
 )
 
 type input struct {
@@ -13,24 +10,25 @@ type input struct {
 	Submitted int64  `json:"submitted"`
 }
 
-func newInputFromJSON(b []byte) *input {
-	dec := json.NewDecoder(bytes.NewReader(b))
+func newInputFromJSON(b []byte) (*input, error) {
 	var pstat input
-	err := dec.Decode(&pstat)
+	err := json.Unmarshal(b, &pstat)
 	if err != nil {
-		log.Errorf("Could not unmarshall json input '%s': %s", b, err)
+		return nil, fmt.Errorf("error decoding input stat `%v`: %v", string(b), err)
 	}
-	return &pstat
+	return &pstat, nil
 }
 
 func (i *input) toPoints() []*point {
 	points := make([]*point, 1)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_submitted", i.Name),
+		Name:        "input_submitted",
 		Type:        counter,
 		Value:       i.Submitted,
 		Description: "messages submitted",
+		LabelName:   "input",
+		LabelValue:  i.Name,
 	}
 
 	return points
