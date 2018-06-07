@@ -21,8 +21,6 @@ ruleset(name="process_stats") {
 }
 ```
 
-The exporter itself logs back via syslog, this cannot be configured at the moment.
-
 ## Provided Metrics
 The following metrics provided by the rsyslog impstats module are tracked by rsyslog_exporter:
 

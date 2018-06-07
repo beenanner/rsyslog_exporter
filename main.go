@@ -1,22 +1,20 @@
 package main
 
 import (
-	"flag"
-	"log"
-	"log/syslog"
 	"net/http"
 	"os"
 	"os/signal"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	promlog "github.com/prometheus/common/log"
+	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
-	listenAddress = flag.String("web.listen-address", ":9104", "Address to listen on for web interface and telemetry.")
-	metricPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
+	listenAddress = kingpin.Flag("web.listen-address", "Address on which to expose metrics and web interface.").Default(":9100").String()
+	metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/metrics").String()
 )
 
 // landingPage contains the HTML served at '/'.
@@ -25,7 +23,7 @@ var landingPage = []byte(`<html>
 <head><title>Rsyslog exporter</title></head>
 <body>
 <h1>Rsyslog exporter</h1>
-<p><a href='` + *metricPath + `'>Metrics</a></p>
+<p><a href='` + *metricsPath + `'>Metrics</a></p>
 </body>
 </html>
 `)
@@ -35,19 +33,17 @@ func init() {
 }
 
 func main() {
-	logwriter, e := syslog.New(syslog.LOG_NOTICE|syslog.LOG_SYSLOG, "rsyslog_exporter")
-	if e == nil {
-		log.SetOutput(logwriter)
-	}
-
-	flag.Parse()
+	log.AddFlags(kingpin.CommandLine)
+	kingpin.Version(version.Print("node_exporter"))
+	kingpin.HelpFlag.Short('h')
+	kingpin.Parse()
 	exporter := newRsyslogExporter()
 
 	go func() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt)
 		<-c
-		log.Print("interrupt received, exiting")
+		log.Infoln("interrupt received, exiting")
 		os.Exit(0)
 	}()
 
@@ -55,15 +51,18 @@ func main() {
 		exporter.run()
 	}()
 
-	promlog.Infoln("Starting rsyslog_exporter", version.Info())
-	promlog.Infoln("Build context", version.BuildContext())
+	log.Infoln("Starting rsyslog_exporter", version.Info())
+	log.Infoln("Build context", version.BuildContext())
 
 	prometheus.MustRegister(exporter)
-	http.Handle(*metricPath, promhttp.Handler())
+	http.Handle(*metricsPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write(landingPage)
 	})
 
-	log.Printf("Listening on %s", *listenAddress)
-	log.Fatal(http.ListenAndServe(*listenAddress, nil))
+	log.Infoln("Listening on %s", *listenAddress)
+	err := http.ListenAndServe(*listenAddress, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
