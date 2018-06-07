@@ -113,10 +113,11 @@ func (r *resource) toPoints() []*point {
 	}
 
 	points[9] = &point{
-		Name:        fmt.Sprintf("%s_openfiles", r.Name),
+		Name:        "resource_openfiles",
 		Type:        gauge,
 		Value:       r.Openfiles,
 		Description: "open files",
+		LabelValue:  r.Name,
 	}
 
 	return points
