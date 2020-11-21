@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"strings"
 )
 
 type action struct {
@@ -16,51 +14,61 @@ type action struct {
 	Resumed           int64  `json:"resumed"`
 }
 
-func newActionFromJSON(b []byte) *action {
-	dec := json.NewDecoder(bytes.NewReader(b))
+func newActionFromJSON(b []byte) (*action, error) {
 	var pstat action
-	dec.Decode(&pstat)
-	pstat.Name = strings.ToLower(pstat.Name)
-	pstat.Name = strings.Replace(pstat.Name, " ", "_", -1)
-	return &pstat
+	err := json.Unmarshal(b, &pstat)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode action stat `%v`: %v", string(b), err)
+	}
+	return &pstat, nil
 }
 
 func (a *action) toPoints() []*point {
 	points := make([]*point, 5)
 
 	points[0] = &point{
-		Name:        fmt.Sprintf("%s_processed", a.Name),
+		Name:        "action_processed",
 		Type:        counter,
 		Value:       a.Processed,
 		Description: "messages processed",
+		LabelName:   "action",
+		LabelValue:  a.Name,
 	}
 
 	points[1] = &point{
-		Name:        fmt.Sprintf("%s_failed", a.Name),
+		Name:        "action_failed",
 		Type:        counter,
 		Value:       a.Failed,
 		Description: "messages failed",
+		LabelName:   "action",
+		LabelValue:  a.Name,
 	}
 
 	points[2] = &point{
-		Name:        fmt.Sprintf("%s_suspended", a.Name),
+		Name:        "action_suspended",
 		Type:        counter,
 		Value:       a.Suspended,
 		Description: "times suspended",
+		LabelName:   "action",
+		LabelValue:  a.Name,
 	}
 
 	points[3] = &point{
-		Name:        fmt.Sprintf("%s_suspended_duration", a.Name),
+		Name:        "action_suspended_duration",
 		Type:        counter,
 		Value:       a.SuspendedDuration,
 		Description: "time spent suspended",
+		LabelName:   "action",
+		LabelValue:  a.Name,
 	}
 
 	points[4] = &point{
-		Name:        fmt.Sprintf("%s_resumed", a.Name),
+		Name:        "action_resumed",
 		Type:        counter,
 		Value:       a.Resumed,
 		Description: "times resumed",
+		LabelName:   "action",
+		LabelValue:  a.Name,
 	}
 
 	return points

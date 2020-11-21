@@ -2,8 +2,11 @@ package main
 
 import (
 	"bufio"
+	"bytes"
+	"fmt"
+	"log"
 	"os"
-	"strings"
+	"regexp"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -17,6 +20,7 @@ const (
 	rsyslogInput
 	rsyslogQueue
 	rsyslogResource
+	rsyslogDynStat
 )
 
 type rsyslogExporter struct {
@@ -37,36 +41,69 @@ func newRsyslogExporter() *rsyslogExporter {
 	return e
 }
 
-func (re *rsyslogExporter) handleStatLine(buf []byte) {
+func (re *rsyslogExporter) handleStatLine(rawbuf []byte) error {
+	s := bytes.SplitN(rawbuf, []byte(" "), 4)
+	if len(s) != 4 {
+		return fmt.Errorf("failed to split log line, expected 4 columns, got: %v", len(s))
+	}
+	buf := s[3]
+
 	pstatType := getStatType(buf)
+	// Clean up the input if it contains the whole syslog message and not just the JSON
+	regex := regexp.MustCompile("^.*?{")
+	buf = regex.ReplaceAll(buf, []byte("{"))
+
+	// fmt.Fprintf(os.Stderr, "input: %s\n", buf)
 
 	switch pstatType {
 	case rsyslogAction:
-		a := newActionFromJSON(buf)
+		a, err := newActionFromJSON(buf)
+		if err != nil {
+			return err
+		}
 		for _, p := range a.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogInput:
-		i := newInputFromJSON(buf)
+		i, err := newInputFromJSON(buf)
+		if err != nil {
+			return err
+		}
 		for _, p := range i.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogQueue:
-		q := newQueueFromJSON(buf)
+		q, err := newQueueFromJSON(buf)
+		if err != nil {
+			return err
+		}
 		for _, p := range q.toPoints() {
-			re.add(p)
+			re.set(p)
 		}
 
 	case rsyslogResource:
-		r := newResourceFromJSON(buf)
+		r, err := newResourceFromJSON(buf)
+		if err != nil {
+			return err
+		}
 		for _, p := range r.toPoints() {
-			re.add(p)
+			re.set(p)
+		}
+	case rsyslogDynStat:
+		s, err := newDynStatFromJSON(buf)
+		if err != nil {
+			return err
+		}
+		for _, p := range s.toPoints() {
+			re.set(p)
 		}
 
 	default:
+		return fmt.Errorf("unknown pstat type: %v", pstatType)
 	}
+	return nil
 }
 
 // Describe sends the description of currently known metrics collected
@@ -107,6 +144,7 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 			p.promDescription(),
 			p.promType(),
 			p.promValue(),
+			p.promLabelValue(),
 		)
 
 		ch <- metric
@@ -115,9 +153,14 @@ func (re *rsyslogExporter) Collect(ch chan<- prometheus.Metric) {
 
 func (re *rsyslogExporter) run() {
 	for re.scanner.Scan() {
-		if strings.Contains(re.scanner.Text(), "EOF") {
-			os.Exit(0)
+		err := re.handleStatLine(re.scanner.Bytes())
+		if err != nil {
+			log.Printf("error handling stats line: %v, line was: %s", err, re.scanner.Bytes())
 		}
-		re.handleStatLine(re.scanner.Bytes())
 	}
+	if err := re.scanner.Err(); err != nil {
+		log.Printf("error reading input: %v", err)
+	}
+	log.Print("input ended, exiting normally")
+	os.Exit(0)
 }
